@@ -5,7 +5,34 @@
 % Sorting Algorithm for Removing Correlation Artifacts in Multi-Neuron
 % Recordings. PLoS ONE 8, e62123.
 %
-% JY 2015-02-22 based on code by Alex Ecker
+% JY 2015-02-22  based on code by A. Ecker, algorithm modified from code by J. Pillow
+% 
+% Functions:
+% BP constructor  
+%       bp = BP('param1', value1, 'param2', value2, ...) constructs
+            %   a Binary Pursuit object with the following optional parameters:
+%       options:
+%         'verbose' (true or false) - spit out text as it goes
+%         'logging'  (true or false) - save output to a text file
+%         'greediness' - modifies p(spike) to make the BP add more or less likely to add spikes
+%
+% Fit model (i.e. estimate waveform templates and spike times).
+%   [X, U] = bp.fit(V, X0) fits the model to voltage trace V
+%   using the initial spike times X0.
+%       V  [nSamples x nElectrodes] - voltage trace
+%       X0 [nSamples x nUnits]      - initial spike times (can be sparse)
+%
+%       X   Spike times (same format as input X0)
+%       U   Array of waveform coefficients
+%           E-by-K-by-M    E: number of basis functions/samples
+%                          K: number of channels
+%                          M: number erbose', true, 'logging', true, 'greediness', 1); 
+% Example Call:
+%
+%   bp = BP('verbose', true, 'logging', true, 'greediness', 1); 
+%   [X,U] = p.fit(V,X0)
+
+
 
 classdef BP
     properties %#ok<*PROP>
@@ -491,6 +518,7 @@ classdef BP
             % Also includes (kludgey) final step of removing spikes that violate minimum ISI.
             %
             % jw pillow 8/18/2014
+            % jly/jk modified for speed increase
             
             [wproj,wnorm] = self.waveformConvolution(W);
             pspike = mean(X) * self.greediness;
