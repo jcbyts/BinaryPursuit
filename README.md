@@ -8,7 +8,7 @@ spike sorting with overlapping waveforms
 		>>[X,U] = bp.fit(V,X0)
 
 
-Code based on code from these repos
+Code based on these repos:
 
 	https://github.com/pillowlab/BinaryPursuitSpikeSorting
 
